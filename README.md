@@ -2,7 +2,7 @@
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
-The purpose of this docker image is to provide  environment for creating IPK packages which are used in OpenWrt package management system. Similarly, DEB packages are used in Debian-based operating systems.
+The purpose of this docker image is to provide an environment for creating IPK packages which are used in OpenWrt package management system. Similarly, DEB packages are used in Debian-based operating systems.
 
 #### Quick platforms refs (in case someone needs rough platform overview):
 
@@ -31,6 +31,9 @@ The purpose of this docker image is to provide  environment for creating IPK pac
 	`docker run -p 8022:22 -it mchsk/openwrt-docker-toolchain:chaos_calmer`
 	
 	**You can change *8022* to any other port you would like to be able to connect to with a SFTP Client. If it is convenient to use files in GUI, use it. In terms of using the Docker this is an antipatern though! But yeah, it was rly painful to use Volumes on mac.**
+
+	**The image has around 7.5 GB.**
+	
 	
 	SFTP credentials: username: `dev` password `dev`.
 
