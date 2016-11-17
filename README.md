@@ -21,8 +21,26 @@ The purpose of this docker image is to provide  environment for creating IPK pac
 ### What is the image dealing with for you?
 
 ```
-* Installs all the dependencies mentioned at https://wiki.openwrt.org/doc/howto/buildroot.exigence
-* Downloads the latest Chaos Calmer sources
-* Downloads sources for Chaos Calmer feeds
+* Installs all the dependencies needed to crosscompie (https://wiki.openwrt.org/doc/howto/buildroot.exigence)
+* Downloads the latest Chaos Calmer sources + feeds
 * Builds tools with toolchain (needed to crosscompile to different archs)
-* Ends up with the command-line where you can work on porting
+```
+# 😎 How to build a package
+
+1. From your prompt run the container on top of the image:
+	`docker run -it mchsk/openwrt-docker-toolchain:chaos_calmer /bin/bash`
+
+3. The commands to work with the package are:
+	
+	```
+	make package/helloworld/compile		// compiles the sources
+	make package/helloworld/install		// creates IPK package
+	make package/helloworld/clean		// cleans
+	--or--
+	make package/feeds/packages/helloworld/compile
+	make package/feeds/packages/helloworld/install
+	make package/feeds/packages/helloworld/clean
+	make package/index					//
+	```
+
+https://wiki.openwrt.org/doc/howtobuild/single.package
