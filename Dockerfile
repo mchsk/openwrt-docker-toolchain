@@ -2,6 +2,11 @@
 
 FROM debian:jessie
 
+# we define the git version (this can be updated later to more latest version and the image can be rebuilt and update if everything succeeds)
+ENV CC_COMMIT 1b6dc2e48ce654a004a7d0b98d7070a515424595
+ENV N2N_COMMIT be9543f98234264d7cbd31de23302c3b2d262f70
+
+
 MAINTAINER Marek Sedlak <bodka.zavinac@gmail.com>
 
 # System update
@@ -19,6 +24,7 @@ WORKDIR /home/dev
 # OpenWrt CC sources
 RUN git clone -b chaos_calmer git://github.com/openwrt/openwrt.git
 WORKDIR /home/dev/openwrt
+RUN git checkout $CC_COMMIT
 
 # OpenWrt feeds
 RUN scripts/feeds update -a && scripts/feeds install -a
@@ -29,8 +35,17 @@ RUN echo "CONFIG_TARGET_ar71xx=y" > .config && make defconfig && make prereq
 # OpenWrt toolchain compilation 
 RUN make tools/install && make toolchain/install
 
+# Adding n2n
+WORKDIR /home/dev/
+RUN git clone https://github.com/RomanHargrave/openwrt-n2n
+WORKDIR /home/dev/openwrt-n2n
+RUN git checkout $N2N_COMMIT
+
+
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
 CMD service ssh start && cd /home/dev && su -s /bin/bash dev
+
+
 
 
