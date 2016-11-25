@@ -41,6 +41,25 @@ RUN git clone https://github.com/RomanHargrave/openwrt-n2n
 WORKDIR /home/dev/openwrt-n2n
 RUN git checkout $N2N_COMMIT
 
+# Copying n2n, freelan, boost into the openwrt directory to build it
+WORKDIR /home/dev/
+# Removing old boost lib (dependency for freelan)
+RUN rm -rf openwrt/feeds/packages/libs/boost/*
+# Getting current openwrt p2p data from my repo
+ENV DCKR_COMMIT c07500aaf79f5dcbc07b39df00cc66b36a50fa0b
+RUN git clone https://github.com/mchsk/openwrt-docker-toolchain && cd openwrt-docker-toolchain %% git checkout $DCKR_COMMIT
+# Adding Roman's n2n package
+RUN mkdir openwrt-docker-toolchain/openwrt/package/network/services/n2n
+RUN cp -r openwrt-n2n/* openwrt-docker-toolchain/openwrt/package/network/services/n2n
+# Copy over upstream data
+RUN cp -r openwrt-docker-toolchain/openwrt .
+
+WORKDIR /home/dev/openwrt
+RUN cp ../openwrt-docker-toolchain/config.diff .config
+RUN make defconfig
+WORKDIR /home/dev/openwrt-docker-toolchain
+RUN sh fix_boost_deps.sh
+
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
