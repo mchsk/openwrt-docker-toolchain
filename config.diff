@@ -41,4 +41,9 @@ CONFIG_VERSION_REPO="http://downloads.openwrt.org/%n/%v/%S/packages"
 # P2P
 CONFIG_PACKAGE_openssl=y
 CONFIG_PACKAGE_n2n=y
-CONFIG_PACKAGE_freelan=y
+CONFIG_PACKAGE_tvheadend=y
+CONFIG_PACKAGE_minidlna=y
+CONFIG_PACKAGE_mjpg-streamer=y
+CONFIG_PACKAGE_ffmpeg=y
+CONFIG_PACKAGE_motion=y
+
