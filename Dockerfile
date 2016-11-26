@@ -45,31 +45,37 @@ RUN git checkout $N2N_COMMIT
 WORKDIR /home/dev/
 
 # Getting current openwrt p2p data from my repo
-ENV DCKR_COMMIT e7d54a3df2497b0584984a9de105ed4f997a1188
+ENV DCKR_COMMIT 712471d58049ebd4439ecb137dc709a661b1ab39
 RUN git clone https://github.com/mchsk/openwrt-docker-toolchain && cd openwrt-docker-toolchain %% git checkout $DCKR_COMMIT
 
 # Adding Roman's n2n package
-RUN mkdir openwrt-docker-toolchain/openwrt/package/network/services/n2n
+RUN mkdir -p openwrt-docker-toolchain/openwrt/package/network/services/n2n
 RUN cp -r openwrt-n2n/* openwrt-docker-toolchain/openwrt/package/network/services/n2n
-# Copy over upstream data
+
+# Copy over upstream data, remove old data first
+RUN rm -rf feeds/packages/multimedia/ffmpeg
+RUN rm -rf feeds/packages/multimedia/minidlna
+RUN rm -rf feeds/packages/multimedia/mjpg-streamer
+RUN rm -rf feeds/packages/multimedia/motion
 RUN cp -r openwrt-docker-toolchain/openwrt .
 
 WORKDIR /home/dev/openwrt
-# RUN cp ../openwrt-docker-toolchain/config.diff .config
+# Adding tvheadend
+RUN cd package/feeds/packages && ln -s ../../../feeds/packages/multimedia/tvheadend tvheadend
 RUN make defconfig
 
-RUN make package/zlib/compile
-RUN make package/zlib/install
+# Packages which rely on OpenSSL fail to build when building separately before the OpenSSL is compiled -> do it :)
+RUN make package/openssl/compile && make package/openssl/install
 
-# todo oznacit boost
-RUN make package/boost/compile
-RUN make package/boost/install
+WORKDIR /home/dev/openwrt
 
+# Copy over the custom default config
+RUN cp -r ../openwrt-docker-toolchain/custom.config .config
 
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
-CMD service ssh start && cd /home/dev && su -s /bin/bash dev
+CMD service ssh start && cd /home/dev && su -s /bin/bash dev && cd openwrt && echo "run 'make menuconfig' to reconfigure :)"
 
 
 
