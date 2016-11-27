@@ -75,7 +75,7 @@ RUN cp -r ../openwrt-docker-toolchain/custom.config .config
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
-CMD service ssh start && cd /home/dev && su -s /bin/bash dev && cd openwrt && echo "run 'make menuconfig' to reconfigure :)"
+CMD service ssh start && cd /home/dev/openwrt && su -s /bin/bash dev
 
 
 
