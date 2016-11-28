@@ -45,7 +45,7 @@ RUN git checkout $N2N_COMMIT
 WORKDIR /home/dev/
 
 # Getting current openwrt p2p data from my repo
-ENV DCKR_COMMIT 794613b09d086fcfd6800df24945baa0c9781bc4
+ENV DCKR_COMMIT 231263a084b3585adb3b8c2973c76cae09255777
 RUN git clone https://github.com/mchsk/openwrt-docker-toolchain && cd openwrt-docker-toolchain %% git checkout $DCKR_COMMIT
 
 # Adding Roman's n2n package
@@ -53,10 +53,10 @@ RUN mkdir -p openwrt-docker-toolchain/openwrt/package/network/services/n2n
 RUN cp -r openwrt-n2n/* openwrt-docker-toolchain/openwrt/package/network/services/n2n
 
 # Copy over upstream data, remove old data first
-RUN rm -rf feeds/packages/multimedia/ffmpeg
-RUN rm -rf feeds/packages/multimedia/minidlna
-RUN rm -rf feeds/packages/multimedia/mjpg-streamer
-RUN rm -rf feeds/packages/multimedia/motion
+RUN rm -rf openwrt/feeds/packages/multimedia/ffmpeg
+RUN rm -rf openwrt/feeds/packages/multimedia/minidlna
+RUN rm -rf openwrt/feeds/packages/multimedia/mjpg-streamer
+RUN rm -rf openwrt/feeds/packages/multimedia/motion
 RUN cp -r openwrt-docker-toolchain/openwrt .
 
 WORKDIR /home/dev/openwrt
