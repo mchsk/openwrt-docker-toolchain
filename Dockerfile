@@ -45,7 +45,7 @@ RUN git checkout $N2N_COMMIT
 WORKDIR /home/dev/
 
 # Getting current openwrt p2p data from my repo
-ENV DCKR_COMMIT 231263a084b3585adb3b8c2973c76cae09255777
+ENV DCKR_COMMIT 71ba38cc0692a3a89fcb178b2f06e6a27e30ee24
 RUN git clone https://github.com/mchsk/openwrt-docker-toolchain && cd openwrt-docker-toolchain %% git checkout $DCKR_COMMIT
 
 # Adding Roman's n2n package
@@ -71,9 +71,6 @@ WORKDIR /home/dev/openwrt
 
 # Copy over the custom default config
 RUN cp -r ../openwrt-docker-toolchain/custom.config .config
-
-# Lunch make kernel_menuconfig for ar71xx
-RUN make kernel_menuconfig
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
