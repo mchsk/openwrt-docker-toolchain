@@ -72,6 +72,8 @@ WORKDIR /home/dev/openwrt
 # Copy over the custom default config
 RUN cp -r ../openwrt-docker-toolchain/custom.config .config
 
+# Lunch make kernel_menuconfig for ar71xx
+RUN make kernel_menuconfig
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
