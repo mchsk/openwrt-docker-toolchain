@@ -62,15 +62,13 @@ RUN cp -r openwrt-docker-toolchain/openwrt .
 WORKDIR /home/dev/openwrt
 # Adding tvheadend
 RUN cd package/feeds/packages && ln -s ../../../feeds/packages/multimedia/tvheadend tvheadend
-RUN make defconfig
 
-# Packages which rely on OpenSSL fail to build when building separately before the OpenSSL is compiled -> do it :)
-RUN make package/openssl/compile && make package/openssl/install
+# Produce ar71xx, rampis and lantiq images
+RUN cp -r ../openwrt-docker-toolchain/ar71xx.config .config && make V=s
+RUN cp -r ../openwrt-docker-toolchain/rampis.config .config && make V=s
+// TODO CREATE LANTIQ CFG
+#RUN cp -r ../openwrt-docker-toolchain/lantiq.config .config && make V=s
 
-WORKDIR /home/dev/openwrt
-
-# Copy over the custom default config
-RUN cp -r ../openwrt-docker-toolchain/custom.config .config
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
 USER root
