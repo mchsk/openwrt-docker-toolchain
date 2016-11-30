@@ -45,7 +45,7 @@ RUN git checkout $N2N_COMMIT
 WORKDIR /home/dev/
 
 # Getting current openwrt p2p data from my repo
-ENV DCKR_COMMIT 6e1d9455df697a256f8d391a2f902ec7fbe88ee0
+ENV DCKR_COMMIT 72c4f88baf1d2c938fa5d426bc99c0565b38d339
 RUN git clone https://github.com/mchsk/openwrt-docker-toolchain && cd openwrt-docker-toolchain %% git checkout $DCKR_COMMIT
 
 # Adding Roman's n2n package
@@ -66,8 +66,7 @@ RUN cd package/feeds/packages && ln -s ../../../feeds/packages/multimedia/tvhead
 # Produce ar71xx, rampis and lantiq images
 RUN cp -r ../openwrt-docker-toolchain/platforms/ar71xx.config .config && make V=s
 RUN cp -r ../openwrt-docker-toolchain/platforms/rampis.config .config && make V=s
-// TODO CREATE LANTIQ CFG
-#RUN cp -r ../openwrt-docker-toolchain/platforms/lantiq.config .config && make V=s
+RUN cp -r ../openwrt-docker-toolchain/platforms/lantiq.config .config && make V=s
 
 
 # Back to "root", as a root, we need to start ssh server. I know this is kinda antipatern, but the reason is SFTP. I had hard (and long) time working with Volumes https://github.com/docker/docker/issues/5489. Now the end-user is able to connect with dev acc to the directory and edit files. My grandmother would call this a convenience.
