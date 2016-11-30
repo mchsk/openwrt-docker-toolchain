@@ -65,7 +65,7 @@ RUN cd package/feeds/packages && ln -s ../../../feeds/packages/multimedia/tvhead
 
 # Produce ar71xx, rampis and lantiq images
 RUN cp -r ../openwrt-docker-toolchain/platforms/ar71xx.config .config && make V=s
-RUN cp -r ../openwrt-docker-toolchain/platforms/rampis.config .config && make V=s
+RUN cp -r ../openwrt-docker-toolchain/platforms/ramips.config .config && make V=s
 RUN cp -r ../openwrt-docker-toolchain/platforms/lantiq.config .config && make V=s
 
 
