@@ -45,7 +45,7 @@ RUN git checkout $N2N_COMMIT
 WORKDIR /home/dev/
 
 # Getting current openwrt p2p data from my repo
-ENV DCKR_COMMIT 3c4a52adfd225427f6bd696d3de55f569a14f6e7
+ENV DCKR_COMMIT 6e1d9455df697a256f8d391a2f902ec7fbe88ee0
 RUN git clone https://github.com/mchsk/openwrt-docker-toolchain && cd openwrt-docker-toolchain %% git checkout $DCKR_COMMIT
 
 # Adding Roman's n2n package
